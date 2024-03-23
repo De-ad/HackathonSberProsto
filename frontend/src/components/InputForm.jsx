@@ -1,47 +1,61 @@
-import { Autocomplete, Button, MenuItem, OutlinedInput, Select, Slider } from '@mui/material';
+import { Button, Slider } from '@mui/material';
 import { useState } from 'react';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+
+const businessTypes = [
+  { id: 1, title: 'Кафе' },
+  { id: 2, title: 'Завод' },
+  { id: 3, title: 'Кладбище' }
+];
+const businessNear = [
+  { id: 1, title: 'Кафе' },
+  { id: 2, title: 'Завод' },
+  { id: 3, title: 'Кладбище' }
+];
+
 
 const InputForm = () => {
   const [rentPrice, setRentPrice] = useState([0, 10000]);
   const [meterPrice, setMeterPrice] = useState([0, 10000]);
-  const [area, setAres] = useState([0,1000]);
+  const [area, setAres] = useState([0, 1000]);
   const [businessCategories, setBusinessCategories] = useState([]);
-  const [floor, setFloor] = useState([0,100]);
+  const [floor, setFloor] = useState([0, 10]);
 
   const handleRentPriceChange = (event, newValue) => {
-     setRentPrice(newValue);
-  }
+    setRentPrice(newValue);
+  };
   const handleAreaChange = (event, newValue) => {
     setAres(newValue);
- }
+  };
   const handleMeterPriceChange = (event, newValue) => {
     setMeterPrice(newValue);
- }
- const handleFloorChange = (event, newValue) => {
-  setFloor(newValue);
-}
-
- const business = [
-  'Кафе',
-  'Завод',
-  'Кладбище'
-];
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+  };
+  const handleFloorChange = (event, newValue) => {
+    setFloor(newValue);
+  };
 
   return (
     <div>
       <h1>Ввод данных</h1>
       <div>Категории бизнеса</div>
-      
+      <Autocomplete
+        multiple
+        id=""
+        options={businessTypes}
+        getOptionLabel={(option) => option?.title}
+        filterSelectedOptions
+        style={{ width: 500, color: 'white' }}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: 500, background: 'white' }}
+            {...params}
+            label="Категории бизнеса"
+            placeholder="Категория бизнеса"
+          />
+        )}
+      />
+
       <div>Цена аренды за месяц</div>
       <Slider
         getAriaLabel={() => ''}
@@ -59,45 +73,43 @@ const MenuProps = {
         valueLabelDisplay="auto"
         max={1000000}
       />
-      
+
       <div>Заведения поблизости (включить)</div>
-        <Select
-          labelId=""
-          id=""
-          multiple
-          value={businessCategories}
-          onChange={setBusinessCategories}
-          input={<OutlinedInput label="BusinessCategories" />}
-          MenuProps={MenuProps}
-        >
-          {business.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
+      <Autocomplete
+        multiple
+        id=""
+        options={businessNear}
+        getOptionLabel={(option) => option?.title}
+        filterSelectedOptions
+        style={{ width: 500, color: 'white' }}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: 500, background: 'white' }}
+            {...params}
+            label="Заведения поблизости (включить)"
+            placeholder="Заведения поблизости (включить)"
+          />
+        )}
+      />
+
       <div>Заведения поблизости (исключить)</div>
-        <Select
-            labelId=""
-            id=""
-            multiple
-            value={businessCategories}
-            onChange={setBusinessCategories}
-            input={<OutlinedInput label="BusinessCategories" />}
-            MenuProps={MenuProps}
-          >
-            {business.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
+      <Autocomplete
+        multiple
+        id=""
+        options={businessNear}
+        getOptionLabel={(option) => option?.title}
+        filterSelectedOptions
+        style={{ width: 500, color: 'white' }}
+        renderInput={(params) => (
+          <TextField
+            style={{ width: 500, background: 'white' }}
+            {...params}
+            label="Заведения поблизости (исключить)"
+            placeholder="Заведения поблизости (исключить)"
+          />
+        )}
+      />
+
       <div>Площадь помещения</div>
       <Slider
         getAriaLabel={() => ''}
@@ -105,6 +117,7 @@ const MenuProps = {
         onChange={handleAreaChange}
         valueLabelDisplay="auto"
         max={1000}
+        marks={[0, 100]}
       />
 
       <div>Этаж</div>
@@ -115,7 +128,8 @@ const MenuProps = {
         valueLabelDisplay="auto"
         max={100}
       />
-      <Button>Найти</Button>
+
+      <Button variant="contained">Найти</Button>
     </div>
   );
 };
