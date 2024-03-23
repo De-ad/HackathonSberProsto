@@ -1,52 +1,62 @@
 import axios from 'axios';
 
-const BASE_URL = '/';
+const BASE_URL = 'http://localhost:8080/business/';
 
-
-export const getMinMaxValues = () => {
-  axios.get(BASE_URL + 'getMinMaxValues').then((r) => {
-    console.log(r);
-    return r.data;
-  });
+export const getMinMaxValues = async () => {
+  try {
+    const response = await axios.get(BASE_URL + 'params');
+    return response.data.suggestions;
+  } catch (error) {
+    console.error('Error fetching min-max values:', error);
+    throw error;
+  }
 };
 
-export const getBusinessCategories = () => {
-  axios.get(BASE_URL + 'getBusinessCategories').then((r) => {
-    console.log(r);
-    return r.data;
-  });
+export const getBusinessCategories = async () => {
+  try {
+    const response = await axios.get(BASE_URL + 'categories');
+    return response.data.categories;
+  } catch (error) {
+    console.error('Error fetching business categories:', error);
+    throw error;
+  }
 };
 
-export const getHint = (businessCategories) => {
-  axios
-    .post(BASE_URL + 'hint', {
+export const getHint = async (businessCategories) => {
+  try {
+    const response = await axios.post(BASE_URL + 'suggest-categories', {
       businessCategories
-    })
-    .then((r) => {
-      console.log(r);
-      return r.data;
     });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching hint:', error);
+    throw error;
+  }
 };
 
-export const getPlaces = (
+export const getPlaces = async (
   businessCategories,
   rentPrice,
   area,
   floor,
+  meterPrice,
   businessNearInclude,
   businessNearExclude
 ) => {
-  axios
-    .post(BASE_URL + 'places', {
-      businessCategories,
+  try {
+    const response = await axios.post(BASE_URL + 'full-suggest', {
+      meterPrice,
       rentPrice,
+      businessCategories,
       area,
-      floor,
       businessNearInclude,
-      businessNearExclude
-    })
-    .then((r) => {
-      console.log(r);
-      return r.data;
+      businessNearExclude,
+      floor
     });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching places:', error);
+    throw error;
+  }
 };

@@ -1,0 +1,18 @@
+.review-block-container {
+  padding: 20px;
+  background-color: white;
+  color: black;
+  /* border-radius: 10px; */
+  .review {
+    padding-bottom: 10px;
+
+    .data {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      .rating {
+        display: flex;
+      }
+    }
+  }
+}
