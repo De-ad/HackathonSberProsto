@@ -16,27 +16,24 @@ const BusinessMap = (props) => {
     setCurrentPoint(data);
   };
 
-  if (points.length === 0) {
-    return <div>Данных нет</div>;
-  }
-
   return (
     <div>
       <YMaps>
         <Map defaultState={{ center: [59.93, 30.31], zoom: 9 }} width="40vw" height="40vh">
-          {points.map((point) => (
-            <Placemark
-              key={point.id}
-              defaultGeometry={[point.lat, point.lon]}
-              options={{
-                iconColor:
-                  currentPoint === point
-                    ? 'rgba(255, 0, 0, 1)'
-                    : calculateSaturation(point.saturationCoef)
-              }}
-              onClick={() => handleCurrentPointChange(point)}
-            />
-          ))}
+          {!(points.length === 0) &&
+            points.map((point) => (
+              <Placemark
+                key={point.id}
+                defaultGeometry={[point.lat, point.lon]}
+                options={{
+                  iconColor:
+                    currentPoint === point
+                      ? 'rgba(255, 0, 0, 1)'
+                      : calculateSaturation(point.saturationCoef)
+                }}
+                onClick={() => handleCurrentPointChange(point)}
+              />
+            ))}
         </Map>
       </YMaps>
       {currentPoint && <OutputDetails currentPoint={currentPoint} />}

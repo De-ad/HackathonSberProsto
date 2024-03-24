@@ -27,7 +27,6 @@ export const getHint = async (businessCategories) => {
     const response = await axios.post(BASE_URL + 'suggest-categories', {
       businessCategories
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching hint:', error);

@@ -4,9 +4,7 @@ import './ReviewBlock.css';
 
 const ReviewBlock = (props) => {
   const { reviews } = props;
-  useEffect(() => {
-    console.log(reviews);
-  }, [props]);
+  useEffect(() => {}, [props]);
 
   return (
     <div className="review-block-container">
