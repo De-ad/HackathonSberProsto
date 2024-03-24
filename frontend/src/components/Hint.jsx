@@ -8,8 +8,6 @@ const Hint = (props) => {
   const [visibility, setVisibility] = useState(true);
 
   useEffect(() => {
-    console.log(chosenCategories);
-    console.log(suggestedCategories);
   }, [props]);
 
   const handleCategoriesAdd = () => {
@@ -17,7 +15,7 @@ const Hint = (props) => {
     setVisibility(false);
   };
 
-  if (include) {
+  if (include && chosenCategories.length != 0) {
     return (
       visibility && (
         <div className="suggest-container">

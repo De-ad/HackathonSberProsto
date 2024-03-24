@@ -71,7 +71,6 @@ const InputForm = () => {
     const fetchData = async () => {
       try {
         const temp = await getHint(selectedCategories);
-        console.log(temp);
         setSuggestedIncludeCategories(temp[0]);
         setSuggestedExcludeCategories(temp[1]);
       } catch (error) {
