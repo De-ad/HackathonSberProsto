@@ -2,14 +2,14 @@ import { Button, Slider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { getBusinessCategories, getMinMaxValues, getHint, getPlaces } from '../service/dataService';
+import { getBusinessCategories, getMinMaxValues, getHint, getPlaces, getMetroStations } from '../service/dataService';
 import BusinessMap from './BusinessMap';
 import './InputForm.css';
 import Hint from './Hint';
 
 const InputForm = () => {
-  const [rentPrice, setRentPrice] = useState([0, 100]);
   const [meterPrice, setMeterPrice] = useState([0, 100]);
+  const [allMetroStations, setAllMetroStations] = useState([]);
   const [area, setArea] = useState([0, 100]);
   const [minMaxValues, setMinMaxValues] = useState([]);
   const [businessCategories, setBusinessCategories] = useState([]);
@@ -20,6 +20,7 @@ const InputForm = () => {
   const [points, setPoints] = useState([]);
   const [suggestedIncludeCategories, setSuggestedIncludeCategories] = useState([]);
   const [suggestedExcludeCategories, setSuggestedExcludeCategories] = useState([]);
+  const [metroStations, setMetroStations] = useState([]);
 
   const handleBusinessInput = (event, newValue) => {
     setSelectedCategories(newValue);
@@ -33,6 +34,8 @@ const InputForm = () => {
         setMinMaxValues(minMax);
         const business = await getBusinessCategories();
         setBusinessCategories(business);
+        const metro = await getMetroStations();
+        setAllMetroStations(metro);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -59,7 +62,7 @@ const InputForm = () => {
       try {
         const temp = await getPlaces(
           businessCategories,
-          rentPrice,
+          metroStations,
           area,
           floor,
           meterPrice,
@@ -95,20 +98,28 @@ const InputForm = () => {
             <TextField
               style={{ width: 500, background: 'white' }}
               {...params}
-              label="Категории бизнеса"
               placeholder="Категория бизнеса"
             />
           )}
         />
 
-        <div>Цена аренды за месяц</div>
-        <Slider
-          getAriaLabel={() => ''}
-          value={rentPrice}
-          onChange={(event, value) => setRentPrice(value)}
-          valueLabelDisplay="auto"
-          min={minMaxValues.rentPrice[0]}
-          max={minMaxValues.rentPrice[1]}
+        <div>Станция метро</div>
+        <Autocomplete
+          multiple
+          id=""
+          options={metroStations}
+          getOptionLabel={(option) => option?.title}
+          filterSelectedOptions
+          style={{ width: 500, color: 'white' }}
+          onChange={(event, value) => setMetroStations(value)}
+          renderInput={(params) => (
+            <TextField
+              style={{ width: 500, background: 'white' }}
+              {...params}
+
+              placeholder="Станция метро"
+            />
+          )}
         />
 
         <div>Цена за метр</div>
@@ -135,7 +146,6 @@ const InputForm = () => {
             <TextField
               style={{ width: 500, background: 'white' }}
               {...params}
-              label="Заведения поблизости (включить)"
               placeholder="Заведения поблизости (включить)"
             />
           )}
@@ -161,7 +171,6 @@ const InputForm = () => {
             <TextField
               style={{ width: 500, background: 'white' }}
               {...params}
-              label="Заведения поблизости (исключить)"
               placeholder="Заведения поблизости (исключить)"
             />
           )}

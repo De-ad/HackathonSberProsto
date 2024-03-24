@@ -2,26 +2,24 @@
   padding: 20px;
   background-color: white;
   color: black;
-  max-height: 160px; 
+  max-height: 160px;
   overflow-y: auto;
-  
+
   .review-scroll-container {
     overflow-y: auto;
     .review {
-        padding-bottom: 10px;
-        border-bottom: 1px solid;
-        margin-bottom: 10px;
-    
-        .data {
+      padding-bottom: 10px;
+      border-bottom: 1px solid;
+      margin-bottom: 10px;
+
+      .data {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        .rating {
           display: flex;
-          justify-content: center;
-          gap: 10px;
-          .rating {
-            display: flex;
-          }
         }
       }
+    }
   }
-  
- 
 }
