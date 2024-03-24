@@ -7,8 +7,7 @@ const Hint = (props) => {
   const { include, chosenCategories, suggestedCategories, onCategoriesAdd } = props;
   const [visibility, setVisibility] = useState(true);
 
-  useEffect(() => {
-  }, [props]);
+  useEffect(() => {}, [props]);
 
   const handleCategoriesAdd = () => {
     onCategoriesAdd(suggestedCategories);
