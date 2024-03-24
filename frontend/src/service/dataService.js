@@ -53,6 +53,7 @@ export const getPlaces = async (
       businessNearExclude,
       floor
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error fetching places:', error);
