@@ -4,6 +4,15 @@
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
-  display: flex;
-  gap: 10px;
+
+  .suggest-container-text {
+    display: flex;
+    align-items: center;
+  }
+
+  .suggest-container-button {
+    color: white;
+    border: 2px solid white;
+    margin-top: 10px;
+  }
 }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import './Hint.css';
-import Icon from '@mui/material/Icon';
+import Add from '@mui/icons-material/Add';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { Button } from '@mui/material';
 
 const Hint = (props) => {
   const { include, chosenCategories, suggestedCategories } = props;
@@ -21,15 +22,37 @@ const Hint = (props) => {
   if (include) {
     return (
       <div className="suggest-container">
-        <ErrorOutlineIcon />
-        {`Обычно заведения категорий ${chosen} открываются рядом с ${suggested}`}
+        <div className="suggest-container-text">
+          <ErrorOutlineIcon />
+          Обычно заведения категорий &quot;{chosenCategories.map((item) => item.title).join(', ')}
+          &quot; открываются рядом с &quot;
+          {suggestedCategories.map((item) => item.title).join(', ')}&quot;
+          <Add
+            sx={{
+              '&:hover': { color: '#1976d2', backgroundColor: 'white' },
+              borderRadius: '24px',
+              transition: '0.3s'
+            }}
+          />
+        </div>
       </div>
     );
   } else {
     return (
       <div className="suggest-container">
-        <ErrorOutlineIcon />
-        {`Заведения категорий ${chosen} не рекомендуется размещать рядом с ${suggested}`}
+        <div className="suggest-container-text">
+          <ErrorOutlineIcon />
+          Заведения категорий &quot;{chosenCategories.map((item) => item.title).join(', ')}&quot; не
+          рекомендуется размещать рядом с &quot;
+          {suggestedCategories.map((item) => item.title).join(', ')}&quot;
+          <Add
+            sx={{
+              '&:hover': { color: '#1976d2', backgroundColor: 'white' },
+              borderRadius: '24px',
+              transition: '0.3s'
+            }}
+          />
+        </div>
       </div>
     );
   }
