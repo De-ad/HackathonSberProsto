@@ -23,14 +23,14 @@ export const getBusinessCategories = async () => {
 };
 
 export const getMetroStations = async () => {
-    try {
-      const response = await axios.get(BASE_URL + 'metro-stations');
-      return response.data.categories;
-    } catch (error) {
-      console.error('Error fetching metro stations:', error);
-      throw error;
-    }
-  };
+  try {
+    const response = await axios.get(BASE_URL + 'metro-stations');
+    return response.data.categories;
+  } catch (error) {
+    console.error('Error fetching metro stations:', error);
+    throw error;
+  }
+};
 
 export const getHint = async (businessCategories) => {
   try {
@@ -46,7 +46,7 @@ export const getHint = async (businessCategories) => {
 
 export const getPlaces = async (
   businessCategories,
-metroStations,
+  metroStations,
   area,
   floor,
   meterPrice,

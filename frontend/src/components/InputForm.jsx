@@ -2,7 +2,13 @@ import { Button, Slider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { getBusinessCategories, getMinMaxValues, getHint, getPlaces, getMetroStations } from '../service/dataService';
+import {
+  getBusinessCategories,
+  getMinMaxValues,
+  getHint,
+  getPlaces,
+  getMetroStations
+} from '../service/dataService';
 import BusinessMap from './BusinessMap';
 import './InputForm.css';
 import Hint from './Hint';
@@ -116,7 +122,6 @@ const InputForm = () => {
             <TextField
               style={{ width: 500, background: 'white' }}
               {...params}
-
               placeholder="Станция метро"
             />
           )}
