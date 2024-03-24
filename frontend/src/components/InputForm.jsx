@@ -14,7 +14,7 @@ import './InputForm.css';
 import Hint from './Hint';
 
 const InputForm = () => {
-  const [meterPrice, setMeterPrice] = useState([0, 10000]);
+  const [meterPrice, setMeterPrice] = useState([0, 10000000]);
   const [allMetroStations, setAllMetroStations] = useState([]);
   const [area, setArea] = useState([0, 10000]);
   const [minMaxValues, setMinMaxValues] = useState([]);
@@ -28,21 +28,15 @@ const InputForm = () => {
   const [suggestedExcludeCategories, setSuggestedExcludeCategories] = useState([]);
   const [metroStations, setMetroStations] = useState([]);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleBusinessInput = (event, newValue) => {
     setSelectedCategories(newValue);
+
     if (newValue.length != 0) {
       setError(false);
     }
-    handleGetHint();
-  };
-
-  const checkBusinessLength = () => {
-    if (selectedCategories.length == 0 || !selectedCategories) {
-      setError(true);
-      return;
-    }
-    setError(false);
+    handleGetHint(newValue);
   };
 
   const handleCategoriesAdd = (categories) => {
@@ -67,12 +61,15 @@ const InputForm = () => {
     fetchData();
   }, []);
 
-  const handleGetHint = () => {
+  const handleGetHint = (newValue) => {
     const fetchData = async () => {
       try {
-        const temp = await getHint(selectedCategories);
+        console.log(selectedCategories);
+        const temp = await getHint(newValue);
         setSuggestedIncludeCategories(temp[0]);
         setSuggestedExcludeCategories(temp[1]);
+        console.log(temp);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -86,6 +83,7 @@ const InputForm = () => {
       return;
     }
     setError(false);
+    setLoading(true);
     const fetchData = async () => {
       try {
         const temp = await getPlaces(
@@ -98,7 +96,9 @@ const InputForm = () => {
           businessCategoriesExclude
         );
         setPoints(temp);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error('Error fetching data:', error);
       }
     };
@@ -236,13 +236,11 @@ const InputForm = () => {
           min={minMaxValues.floor[0]}
           max={minMaxValues.floor[1]}
         />
-
         <Button sx={{ width: 'min-content' }} variant="contained" onClick={handleSend}>
           Найти
         </Button>
       </div>
-
-      <BusinessMap points={points} />
+      <BusinessMap points={points} loading={loading} />
     </div>
   );
 };

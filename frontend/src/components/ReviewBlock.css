@@ -3,6 +3,7 @@
   color: black;
   max-height: 180px;
   overflow-y: auto;
+  width: inherit;
 
   .review-scroll-container {
     overflow-y: auto;

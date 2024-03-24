@@ -18,9 +18,10 @@ const ReviewBlock = (props) => {
                 <Rating name="read-only" value={review.rating} precision={0.1} readOnly />
                 {review.rating}
               </div>
-              <div>{review.reviewCount} отзывов</div>
+             
             </div>
             <div className="data">
+            <div>{review.reviewCount} отзывов</div>
               <div>{review.address}</div>
             </div>
           </div>
