@@ -8,11 +8,6 @@
   .suggest-container-text {
     display: flex;
     align-items: center;
-  }
-
-  .suggest-container-button {
-    color: white;
-    border: 2px solid white;
-    margin-top: 10px;
+    gap: 10px;
   }
 }

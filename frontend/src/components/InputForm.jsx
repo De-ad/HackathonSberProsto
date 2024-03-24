@@ -14,12 +14,12 @@ import './InputForm.css';
 import Hint from './Hint';
 
 const InputForm = () => {
-  const [meterPrice, setMeterPrice] = useState([0, 100]);
+  const [meterPrice, setMeterPrice] = useState([0, 10000]);
   const [allMetroStations, setAllMetroStations] = useState([]);
-  const [area, setArea] = useState([0, 100]);
+  const [area, setArea] = useState([0, 10000]);
   const [minMaxValues, setMinMaxValues] = useState([]);
   const [businessCategories, setBusinessCategories] = useState([]);
-  const [floor, setFloor] = useState([0, 100]);
+  const [floor, setFloor] = useState([0, 10000]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [businessCategoriesInclude, setBusinessCategoriesInclude] = useState([]);
   const [businessCategoriesExclude, setBusinessCategoriesExclude] = useState([]);
@@ -27,10 +27,27 @@ const InputForm = () => {
   const [suggestedIncludeCategories, setSuggestedIncludeCategories] = useState([]);
   const [suggestedExcludeCategories, setSuggestedExcludeCategories] = useState([]);
   const [metroStations, setMetroStations] = useState([]);
+  const [error, setError] = useState(false);
 
   const handleBusinessInput = (event, newValue) => {
     setSelectedCategories(newValue);
+    if (newValue.length != 0) {
+      setError(false);
+    }
     handleGetHint();
+  };
+
+  const checkBusinessLength = () => {
+    if (selectedCategories.length == 0 || !selectedCategories) {
+      setError(true);
+      return;
+    }
+    setError(false);
+  };
+
+  const handleCategoriesAdd = (categories) => {
+    let temp = [...categories, ...businessCategoriesInclude];
+    setBusinessCategoriesInclude(temp);
   };
 
   useEffect(() => {
@@ -54,8 +71,9 @@ const InputForm = () => {
     const fetchData = async () => {
       try {
         const temp = await getHint(selectedCategories);
-        setSuggestedIncludeCategories(temp[0].categories);
-        setSuggestedExcludeCategories(temp[1].categories);
+        console.log(temp);
+        setSuggestedIncludeCategories(temp[0]);
+        setSuggestedExcludeCategories(temp[1]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -64,10 +82,15 @@ const InputForm = () => {
   };
 
   const handleSend = () => {
+    if (selectedCategories.length == 0 || !selectedCategories) {
+      setError(true);
+      return;
+    }
+    setError(false);
     const fetchData = async () => {
       try {
         const temp = await getPlaces(
-          businessCategories,
+          selectedCategories,
           metroStations,
           area,
           floor,
@@ -91,7 +114,9 @@ const InputForm = () => {
     <div className="root-container">
       <div className="input-container">
         <h1>Ввод данных</h1>
-        <div>Категории бизнеса</div>
+        <div>
+          Категории бизнеса <span style={{ color: 'red' }}>*</span>
+        </div>
         <Autocomplete
           multiple
           id=""
@@ -99,7 +124,9 @@ const InputForm = () => {
           getOptionLabel={(option) => option?.title}
           filterSelectedOptions
           style={{ width: 500, color: 'white' }}
-          onChange={(event, value) => handleBusinessInput(value)}
+          value={selectedCategories}
+          aria-describedby="placement-popper"
+          onChange={(event, value) => handleBusinessInput(event, value)}
           renderInput={(params) => (
             <TextField
               style={{ width: 500, background: 'white' }}
@@ -108,12 +135,12 @@ const InputForm = () => {
             />
           )}
         />
+        {error && <div style={{ color: 'red' }}>Введите хотя бы одну категорию данных</div>}
 
         <div>Станция метро</div>
         <Autocomplete
-          multiple
           id=""
-          options={metroStations}
+          options={allMetroStations}
           getOptionLabel={(option) => option?.title}
           filterSelectedOptions
           style={{ width: 500, color: 'white' }}
@@ -145,6 +172,7 @@ const InputForm = () => {
           getOptionLabel={(option) => option?.title}
           filterSelectedOptions
           style={{ width: 500, color: 'white' }}
+          value={businessCategoriesInclude}
           aria-describedby="placement-popper"
           onChange={(event, value) => setBusinessCategoriesInclude(value)}
           renderInput={(params) => (
@@ -158,8 +186,9 @@ const InputForm = () => {
         {suggestedIncludeCategories.length != 0 && (
           <Hint
             include={true}
-            chosenCategories={businessCategories}
+            chosenCategories={selectedCategories}
             suggestedCategories={suggestedIncludeCategories}
+            onCategoriesAdd={handleCategoriesAdd}
           />
         )}
 
@@ -185,6 +214,7 @@ const InputForm = () => {
             include={false}
             chosenCategories={businessCategories}
             suggestedCategories={suggestedExcludeCategories}
+            onCategoriesAdd={handleCategoriesAdd}
           />
         )}
 
@@ -208,7 +238,7 @@ const InputForm = () => {
           max={minMaxValues.floor[1]}
         />
 
-        <Button variant="contained" onClick={handleSend}>
+        <Button sx={{ width: 'min-content' }} variant="contained" onClick={handleSend}>
           Найти
         </Button>
       </div>

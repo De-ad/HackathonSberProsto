@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/business/';
+const BASE_URL = 'http://localhost:8000/business/';
 
 export const getMinMaxValues = async () => {
   try {
@@ -15,7 +15,7 @@ export const getMinMaxValues = async () => {
 export const getBusinessCategories = async () => {
   try {
     const response = await axios.get(BASE_URL + 'categories');
-    return response.data.categories;
+    return response.data;
   } catch (error) {
     console.error('Error fetching business categories:', error);
     throw error;
@@ -25,7 +25,7 @@ export const getBusinessCategories = async () => {
 export const getMetroStations = async () => {
   try {
     const response = await axios.get(BASE_URL + 'metro-stations');
-    return response.data.categories;
+    return response.data;
   } catch (error) {
     console.error('Error fetching metro stations:', error);
     throw error;

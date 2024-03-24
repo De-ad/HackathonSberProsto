@@ -2,7 +2,11 @@
   display: flex;
   gap: 50px;
   align-items: center;
+
   .input-container {
     width: 500px;
+    justify-items: center;
+    display: grid;
+    gap: 8px;
   }
 }
